@@ -5,7 +5,7 @@ use strict;
 use warnings FATAL => 'all';
 
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 
 

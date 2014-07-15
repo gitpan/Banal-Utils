@@ -1,5 +1,11 @@
 Revision history for Banal-Utils
 
+0.05    Tue Jul 14 2014
+        Corrected the 'Changes' entry.
+        
+0.04    Tue Jul 14 2014
+        Added Hash.pm by bringing in some refactored code from elsewhere.
+        
 0.03    Mon Jul 14 2014
         Put the stuff under version control (git) and fixed a few things.
         
