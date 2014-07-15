@@ -19,7 +19,7 @@ no_index:
     - inc
 requires:
   Carp: 1.25
-  Data::Dumper: 2.151
+  Data::Dumper: 2
   Scalar::Util: 1.35
   perl: 5.006
-version: 0.03
+version: 0.04

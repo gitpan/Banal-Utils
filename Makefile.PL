@@ -19,7 +19,7 @@ WriteMakefile(
     },
     PREREQ_PM => {
      	'Carp'							=> 1.25,
-      	'Data::Dumper'					=> 2.151,
+      	'Data::Dumper'					=> 2.00,
     	'Scalar::Util'					=> 1.35,
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },

@@ -2,6 +2,7 @@ Changes
 lib/Banal/Utils.pm
 lib/Banal/Utils/File.pm
 lib/Banal/Utils/General.pm
+lib/Banal/Utils/Hash.pm
 lib/Banal/Utils/String.pm
 LICENSE
 Makefile.PL

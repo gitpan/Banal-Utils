@@ -1,12 +1,57 @@
-package Banal::Utils;
+#===============================================
+package Banal::Utils::Hash;
 
-use 5.006;
-use strict;
-use warnings FATAL => 'all';
+use utf8;
+require Exporter;
+
+@ISA = qw(Exporter);
+@EXPORT_OK = qw(get_inner_hash_value get_inner_hash_value_by_delimited_key_path);
+
+use Scalar::Util qw(reftype);
 
 
-our $VERSION = '0.04';
+#-----------------------------------------------
+# get_inner_hash_value($hash, @$keys)	-- Given a list of keys, get the associated "value" in an inner hash. 
+#...............................................
+# Function (NOT a method)
+#-----------------------------------------------
+sub get_inner_hash_value {
+	my $hash	= shift;
+	my $keys	= [@_];
+	my $key		= pop @$keys;
+	
+	my $h = $hash;
+	foreach my $k (@$keys) {
+		return undef unless (reftype($h) eq 'HASH');
+		if (exists ($h->{$k})) {
+			$h = $h->{$k};
+		}else {
+			return undef;
+		}
+	} 
+	
+	if (exists ($h->{$key})) {
+		return $h->{$key};
+	}
+	return undef;
+}
 
+
+#-----------------------------------------------
+# get_inner_hash_value_by_delimited_key_path($hash, $keys_path [, $delimeter])	-- Given a delimited key_path, get the associated "value" in an inner hash. 
+#
+#		By default, the delimeter is forward slash "/".
+#...............................................
+# Function (NOT a method)
+#-----------------------------------------------
+sub get_inner_hash_value_by_delimited_key_path {
+	my $hash		= shift;
+	my $key_path	= shift;
+	my $delimeter	= shift || '/';
+	
+	my @keys = split ($delimeter, $key_path);
+	return get_inner_hash_value($hash, @keys);
+}
 
 
 1;
@@ -15,28 +60,39 @@ __END__
 
 =head1 NAME
 
-Banal::Utils - Banal::Utils for processing files, strings, etc
+Banal::Utils::Hash - Totally banal and trivial hash utilities.
 
 
 =head1 SYNOPSIS
 
-
-    use Banal::Utils;
-    use Banal::Utils::String qw(trim);
-
-	my $str = trim " Hello World! ";
-    
-    print $str . "\n";		#prints => Hello World!		(without the spaces)	
+    use Banal::Utils::Hash qw(get_inner_hash_value get_inner_hash_value_by_delimited_key_path);
     
     ...
 
 =head1 EXPORT
 
-None. (but see submodules: General, File, String, ...)
+None by default.
 
-=head1 SUBROUTINES/METHODS
+=head1 EXPORT_OK
 
-None. (but see submodules: General, File, String, ...)
+=head2 get_inner_hash_value
+
+=head2 get_inner_hash_value_by_delimited_key_path
+
+
+=head1 SUBROUTINES / FUNCTIONS
+
+=head2 get_inner_hash_value($hash, @$keys)
+
+Given a list of keys, get the associated "value" in an inner hash in a hash of hashes.
+
+
+=head2 get_inner_hash_value_by_delimited_key_path($hash, $keys_path [, $delimeter])	
+
+Given a delimited key_path, get the associated "value" in an inner hash. 
+
+By default, the delimeter is forward slash "/".
+
 
 =head1 AUTHOR
 
@@ -55,10 +111,7 @@ automatically be notified of progress on your bug as I make changes.
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc Banal::Utils
-    perldoc Banal::Utils::File
-    perldoc Banal::Utils::General
-    perldoc Banal::Utils::String
+    perldoc Banal::Utils::Hash
 
 
 You can also look for information at:
@@ -130,4 +183,5 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 =cut
 
-1; # End of Banal::Utils
+1; # End of Banal::Utils::Hash
+
