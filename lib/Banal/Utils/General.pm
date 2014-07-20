@@ -8,45 +8,7 @@ no warnings;
 use Data::Dumper;
 
 @ISA = qw(Exporter);
-@EXPORT_OK = qw(load_class run_cmd run_perl debug_dump_vars);
-
-#----------------------------------
-# Function, not a method!
-#----------------------------------
-sub load_class {
-	my $oclass		= shift;
-	my $prefixes	= shift || [''];
-	my $opts		= shift || {};
-	
-	my $verbose		= $opts->{verbose} || 0;
-	my $on_fail		= $opts->{on_fail} || 'warn';
-
-	my $class;
-	
-	foreach my $pfx (@$prefixes) {
-		$class = $pfx . $oclass;
-		if (eval "require ($class);") {	
-			warn "load_class => Just required class '$class'\n";
-			return $class;
-		} else {
-			if ($verbose >= 6) {
-				my $msg = "load_class  => Tried to load(require) class '$oclass' via package name '$class' without any luck. Oh well. Next time perhaps.\n";
-			
-				print STDERR $msg;
-			} 
-		}
-	}	
-	
-	if ($on_fail) {
-		my $msg = "load_class  => Unable to load(require) class '$oclass'\n";
-	
-		print STDERR 	$msg if ($on_fail =~ /^print$/i);
-		warn 			$msg if ($on_fail =~ /^warn$/i);
-		die  			$msg if ($on_fail =~ /^die$/i);
-	}
-	
-	return;
-}
+@EXPORT_OK = qw( run_cmd run_perl debug_dump_vars);
 
 
 ##############################################################################"
@@ -128,21 +90,6 @@ debug_dump_vars
 
 =head1 SUBROUTINES / FUNCTIONS
 
-=head2 load_class($class_name [, $prefixes, $opts])
-
-Given a class name, attempts to load it via require. If given a list of prefixes, this routine will try to load the class with each prefix until success or until the list of prefixes is exhausted.
-
-RETURNS the actual class name (with the eventual prefix) on success, nothing (undef or empty list, depending on the calling context) otherwise.
-
-OPTIONS ($opts):
-	on_fail		:  	warn|die|print|ignore
-					Can optionally "die" or "warn" (the default) or print an error message (on STDERR) on failure.
-					Any other value will simply be ignored.
-
-	verbose		:  	0 (slient) .. 9 (most verbose)
-					Print messages (on STDERR) of various levels of verbosity during different stages of the routine. 
-
-
 =head2 run_cmd ($opts, $cmd)
 
 Execute a system command (given by $cmd) via the backtick (`) operator and return the result.
@@ -179,7 +126,7 @@ automatically be notified of progress on your bug as I make changes.
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc Banal::Utils::File
+    perldoc Banal::Utils::General
 
 
 You can also look for information at:

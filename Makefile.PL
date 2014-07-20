@@ -22,6 +22,13 @@ WriteMakefile(
       	'Data::Dumper'					=> 2.00,
     	'Scalar::Util'					=> 1.35,
     },
-    dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
+    dist  => 	{ 	
+    			COMPRESS => 'gzip -9f', 
+    			SUFFIX 	 => 'gz',
+    			},
     clean => { FILES => 'Banal-Utils-*' },
 );
+
+
+
+    

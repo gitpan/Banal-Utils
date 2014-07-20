@@ -1,5 +1,12 @@
 Revision history for Banal-Utils
 
+0.08    Sun Jul 20 2014
+        - Reorganized the whole library. Now we have got separate modules for 'Array', 'Hash', 'Data', Class', ...
+        - Also, added several new functions, most notable of which is the "banal_get_data()" in Banal::Utils::Data. 
+        
+0.06    Sun Jul 20 2014
+        Added the utility function 'get_data_by_path', inspired by the 'getbypath' method from 'Config::General::Extended'
+        
 0.05    Tue Jul 14 2014
         Corrected the 'Changes' entry.
         

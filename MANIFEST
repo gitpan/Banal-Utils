@@ -1,5 +1,8 @@
 Changes
 lib/Banal/Utils.pm
+lib/Banal/Utils/Array.pm
+lib/Banal/Utils/Class.pm
+lib/Banal/Utils/Data.pm
 lib/Banal/Utils/File.pm
 lib/Banal/Utils/General.pm
 lib/Banal/Utils/Hash.pm

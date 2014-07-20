@@ -1,11 +1,16 @@
 #===============================================
 package Banal::Utils::String;
 
+use 5.006;
 use utf8;
+use strict;
+use warnings;
+no  warnings qw(uninitialized);
+
 require Exporter;
 
-@ISA = qw(Exporter);
-@EXPORT_OK = qw(trim ltrim rtrim);
+our @ISA 		= qw(Exporter);
+our @EXPORT_OK 	= qw(trim ltrim rtrim);
 
 # Perl trim function to remove whitespace from the start and end of the string
 sub trim($)

@@ -1,51 +1,107 @@
-package Banal::Utils;
+#===============================================
+package Banal::Utils::Class;
 
-use 5.006;
 use utf8;
-use strict;
-use warnings;
-no  warnings qw(uninitialized);
-
 require Exporter;
+no warnings;
 
-our @ISA 		= qw(Exporter);
-our @EXPORT_OK 	= qw();
+use Carp;
 
-our $VERSION = '0.10';
+@ISA = qw(Exporter);
+@EXPORT_OK = qw( load_class);
+
+
+##############################################################################"
+# Utility functions
+##############################################################################"
+
+
+#----------------------------------
+# Function, not a method!
+#----------------------------------
+sub load_class {
+	my $oclass		= shift;
+	my $prefixes	= shift || [''];
+	my $opts		= shift || {};
+	
+	my $verbose		= $opts->{verbose} || 0;
+	my $on_fail		= $opts->{on_fail} || 'warn';
+
+	my $class;
+	
+	foreach my $pfx (@$prefixes) {
+		$class = $pfx . $oclass;
+		if (eval "require ($class);") {	
+			warn "load_class => Just required class '$class'\n";
+			return $class;
+		} else {
+			if ($verbose >= 6) {
+				my $msg = "load_class  => Tried to load(require) class '$oclass' via package name '$class' without any luck. Oh well. Next time perhaps.\n";
+			
+				print STDERR $msg;
+			} 
+		}
+	}	
+	
+	if ($on_fail) {
+		my $msg = "load_class  => Unable to load(require) class '$oclass'\n";
+	
+		print STDERR 	$msg if ($on_fail =~ /^print$/i);
+		warn 			$msg if ($on_fail =~ /^warn$/i);
+		die  			$msg if ($on_fail =~ /^die$/i);
+		croak  			$msg if ($on_fail =~ /^croak$/i);
+		clutch  		$msg if ($on_fail =~ /^clutch$/i);
+	}
+	
+	
+	return;
+}
+
+
+
 
 
 1;
+
 
 __END__
 
 =head1 NAME
 
-Banal::Utils - Banal::Utils for processing files, strings, etc
+Banal::Utils::Class - Totally banal and trivial utilities about classses.
 
 
 =head1 SYNOPSIS
 
-
-    use Banal::Utils;
-    use Banal::Utils::String qw(trim);
-
-	my $str = trim " Hello World! ";
-    
-    print $str . "\n";		#prints => Hello World!		(without the spaces)	
+    use Banal::Utils::Class qw(load_class);
     
     ...
 
 =head1 EXPORT
 
-None. 
+None by default.
 
 =head1 EXPORT_OK
 
-None. (but see submodules: General, Class, File, Data, Array, Hash, String, ...)
+load_class 
 
-=head1 SUBROUTINES/METHODS
 
-None. (but see submodules: General, Class, File, Data, Array, Hash, String, ...)
+=head1 SUBROUTINES / FUNCTIONS
+
+=head2 load_class($class_name [, $prefixes, $opts])
+
+Given a class name, attempts to load it via require. If given a list of prefixes, this routine will try to load the class with each prefix until success or until the list of prefixes is exhausted.
+
+RETURNS the actual class name (with the eventual prefix) on success, nothing (undef or empty list, depending on the calling context) otherwise.
+
+OPTIONS ($opts):
+	on_fail		:  	warn|die|print|ignore|corak|clutch
+					Can optionally "die" or "warn" (the default) or "croak" or "clutch"' or print an error message (on STDERR) on failure.
+					Any other value will simply be ignored.
+
+	verbose		:  	0 (slient) .. 9 (most verbose)
+					Print messages (on STDERR) of various levels of verbosity during different stages of the routine. 
+
 
 =head1 AUTHOR
 
@@ -64,10 +120,7 @@ automatically be notified of progress on your bug as I make changes.
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc Banal::Utils
-    perldoc Banal::Utils::File
-    perldoc Banal::Utils::General
-    perldoc Banal::Utils::String
+    perldoc Banal::Utils::Class
 
 
 You can also look for information at:
@@ -139,4 +192,6 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 =cut
 
-1; # End of Banal::Utils
+1; # End of Banal::Utils::Class
+
+

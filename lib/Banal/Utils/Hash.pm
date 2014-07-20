@@ -1,17 +1,25 @@
 #===============================================
 package Banal::Utils::Hash;
 
+use 5.006;
 use utf8;
+use strict;
+use warnings;
+no  warnings qw(uninitialized);
+
 require Exporter;
 
-@ISA = qw(Exporter);
-@EXPORT_OK = qw(get_inner_hash_value get_inner_hash_value_by_delimited_key_path);
+our @ISA 		= qw(Exporter);
+our @EXPORT_OK 	= qw(get_inner_hash_value);
+
 
 use Scalar::Util qw(reftype);
+use Carp;
 
 
 #-----------------------------------------------
-# get_inner_hash_value($hash, @$keys)	-- Given a list of keys, get the associated "value" in an inner hash. 
+# get_inner_hash_value($hash, @$keys)	-- 	Given a list of keys, get the associated "value" in an inner hash. 
+#											Assumes that all inner levels (except the obtained value) are also HASH references.
 #...............................................
 # Function (NOT a method)
 #-----------------------------------------------
@@ -37,21 +45,7 @@ sub get_inner_hash_value {
 }
 
 
-#-----------------------------------------------
-# get_inner_hash_value_by_delimited_key_path($hash, $keys_path [, $delimeter])	-- Given a delimited key_path, get the associated "value" in an inner hash. 
-#
-#		By default, the delimeter is forward slash "/".
-#...............................................
-# Function (NOT a method)
-#-----------------------------------------------
-sub get_inner_hash_value_by_delimited_key_path {
-	my $hash		= shift;
-	my $key_path	= shift;
-	my $delimeter	= shift || '/';
-	
-	my @keys = split ($delimeter, $key_path);
-	return get_inner_hash_value($hash, @keys);
-}
+
 
 
 1;
@@ -65,7 +59,7 @@ Banal::Utils::Hash - Totally banal and trivial hash utilities.
 
 =head1 SYNOPSIS
 
-    use Banal::Utils::Hash qw(get_inner_hash_value get_inner_hash_value_by_delimited_key_path);
+    use Banal::Utils::Hash qw(get_inner_hash_value);
     
     ...
 
@@ -77,21 +71,15 @@ None by default.
 
 =head2 get_inner_hash_value
 
-=head2 get_inner_hash_value_by_delimited_key_path
-
 
 =head1 SUBROUTINES / FUNCTIONS
 
 =head2 get_inner_hash_value($hash, @$keys)
 
 Given a list of keys, get the associated "value" in an inner hash in a hash of hashes.
+Assumes that all inner levels (except the obtained value) are also HASH references.
 
-
-=head2 get_inner_hash_value_by_delimited_key_path($hash, $keys_path [, $delimeter])	
-
-Given a delimited key_path, get the associated "value" in an inner hash. 
-
-By default, the delimeter is forward slash "/".
+See the C<banal_get_data()> function in L<Banal::Utils::Data> for a much more sophisticated routine for similar purposes and beyond. 
 
 
 =head1 AUTHOR

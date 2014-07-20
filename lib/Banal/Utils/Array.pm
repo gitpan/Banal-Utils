@@ -1,4 +1,5 @@
-package Banal::Utils;
+#===============================================
+package Banal::Utils::Array;
 
 use 5.006;
 use utf8;
@@ -9,9 +10,32 @@ no  warnings qw(uninitialized);
 require Exporter;
 
 our @ISA 		= qw(Exporter);
-our @EXPORT_OK 	= qw();
+our @EXPORT_OK 	= qw(array1_starts_with_array2);
 
-our $VERSION = '0.10';
+# Returns true (1) if array1 starts with array2 (via element-by-element equality), false (0) otherwise. 
+# The order of elements is important (it ain't a bag). For each compared element, equality can be established either thru string (eq) or numeric (==) comparison.
+sub array1_starts_with_array2 {
+	my ($array1, $array2) = @_;
+
+	# if array2 is empty, then the result is undefined.
+	return 		unless (scalar($array2));
+	
+	# if array2 has more items than array1, then array1 can't possibly start with array2.
+	return 0	if (scalar($array2) > scalar($array1));
+		 
+	my $k = 0;
+	foreach my $e2 (@$array2) {
+		no warnings;
+		my $e1 = $array1->[$k];	
+		
+		# Here, we allow both string and numeric equality. It's kind o a relaxed thing. The "no warnings" pragma (above) comes in handy.
+		return 0 unless (($e1 eq $e2) || ($e1 == $e2));
+		$k++;
+	}
+	return 1;
+}
+
+
 
 
 1;
@@ -20,32 +44,40 @@ __END__
 
 =head1 NAME
 
-Banal::Utils - Banal::Utils for processing files, strings, etc
+Banal::Utils::Array - Totally banal and trivial utilities for arrays and lists.
 
 
 =head1 SYNOPSIS
 
-
-    use Banal::Utils;
-    use Banal::Utils::String qw(trim);
-
-	my $str = trim " Hello World! ";
+    use Banal::Utils::Array qw(array1_starts_with_array2);
     
-    print $str . "\n";		#prints => Hello World!		(without the spaces)	
+    $a1 = ["greetings","to", "the", "world"];
+    $a2 = ["greetings","to"];
+    
+    if (array1_starts_with_array2($a1, $a2)) {
+    	print "Hello World!\n";
+    }
     
     ...
 
 =head1 EXPORT
 
-None. 
+None by default.
 
 =head1 EXPORT_OK
 
-None. (but see submodules: General, Class, File, Data, Array, Hash, String, ...)
+array1_starts_with_array2
 
-=head1 SUBROUTINES/METHODS
 
-None. (but see submodules: General, Class, File, Data, Array, Hash, String, ...)
+=head1 SUBROUTINES / FUNCTIONS
+
+=head2 array1_starts_with_array2($a1, $a2)
+
+Returns true (1) if array1 starts with array2 (via element-by-element equality), false (0) otherwise. 
+The order of elements is important (it ain't a bag). 
+For each compared element, equality can be established either thru string (eq) or numeric (==) comparison.
+
+
 
 =head1 AUTHOR
 
@@ -64,10 +96,7 @@ automatically be notified of progress on your bug as I make changes.
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc Banal::Utils
-    perldoc Banal::Utils::File
-    perldoc Banal::Utils::General
-    perldoc Banal::Utils::String
+    perldoc Banal::Utils::Array
 
 
 You can also look for information at:
@@ -139,4 +168,5 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 =cut
 
-1; # End of Banal::Utils
+1; # End of Banal::Utils::Array
+
