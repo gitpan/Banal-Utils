@@ -1,5 +1,11 @@
 Revision history for Banal-Utils
 
+0.11    Mon Jul 21 2014
+        - Re-uploading to CPAN, as the 'Changes' file was not properly updated.  
+        
+0.10    Mon Jul 21 2014
+        - Fixed some issues and documentation. Uploaded to CPAN.  
+
 0.08    Sun Jul 20 2014
         - Reorganized the whole library. Now we have got separate modules for 'Array', 'Hash', 'Data', Class', ...
         - Also, added several new functions, most notable of which is the "banal_get_data()" in Banal::Utils::Data. 

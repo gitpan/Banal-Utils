@@ -11,7 +11,7 @@ require Exporter;
 our @ISA 		= qw(Exporter);
 our @EXPORT_OK 	= qw();
 
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 
 
 1;
