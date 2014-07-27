@@ -32,7 +32,10 @@ use Banal::Utils::Array 	qw(array1_starts_with_array2);
 #----------------------------------
 sub banal_get_data {
 	my $args								= {@_};
-	my $search_upwards_while_not_defined	= $args->{search_upwards_while_not_defined};
+	my $opts								= $args->{options} || {};
+	my $search_upwards_while_not_defined	= $opts->{search_upwards_while_not_defined};
+
+	
 	
 	# This is where the MAGIC happens. For a full list of options, see the function "normalize_data_root_and_keys()".
 	my ($root, @keys) 						= _normalize_data_root_and_keys (@_);		
@@ -46,12 +49,13 @@ sub banal_get_data {
 	# The reason for the below loop is to allow outer level 'variables' to be used when the variable is not defined at the proper (inner) level.
 	# Very handy for CONFIGURATION handling scenarios.
 	my $key		= pop @keys;
-	while (scalar(@keys)) {
+	while (scalar(@keys) >= 0) {
 		my $value= _banal_basic_get_data_via_key_list(data=>$root, keys=>[@keys, $key]);	
 		return $value if defined($value);	
 		
+		# Continue searching upwards if we are allowed to do so. Return otherwise.
 		return unless $search_upwards_while_not_defined;
-					
+			
 		pop @keys;
 	}
 	return;
@@ -111,7 +115,7 @@ sub _is_absolute_data_key_reference {
 #----------------------------------
 sub _normalize_data_root_and_keys {
 	my $args								= {@_};
-	my $keys								= $args->{keys}				|| $args->{path} 	|| [];
+	my $keys								= $args->{keys}				|| $args->{key}				|| $args->{path} 	|| [];
 	my $data								= $args->{data};	
 	my $context								= $args->{context}			|| [];	
 	my $opts								= $args->{options}			|| {};
